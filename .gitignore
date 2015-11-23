@@ -1,5 +1,6 @@
 # Object file
 #*.o
-
+*.pdf
+*.PDF
 # Ada Library Information
 #*.ali
