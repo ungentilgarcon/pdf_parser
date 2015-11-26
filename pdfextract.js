@@ -1,61 +1,45 @@
-
 var path = require('path')
 var extract = require('pdf-text-extract')
+// var extract = require('pdf-extract');
 var fs = require('fs');
 var util = require('util');
-
-function logToFile(input){
-    fs.writeFile('.log', util.inspect(input));
-}
-
+var lines = require('underscore');
 
 ///to split with a param list
-var multiSplit = function(str,delimeters){
-    var result = [str];
-    if (typeof(delimeters) == 'string')
-        delimeters = [delimeters];
-    while(delimeters.length>0){
-        for(var i = 0;i<result.length;i++){
-            var tempSplit = result[i].split(delimeters[0]);
-            result = result.slice(0,i).concat(tempSplit).concat(result.slice(i+1));
+var multiSplit = function(str, delimeters) {
+        //var result = [str];
+        var result = str;
+        if (typeof(delimeters) == 'string')
+            delimeters = [delimeters];
+            console.log(delimeters);
+            //console.log(str);
+            //console.log(result)
+              //console.log(delimeters.length);
+        while (delimeters.length > 0) {
+            //console.log("result.length",result.length)
+            for (var i = 0; i < result.length-1; i++) {
+                //console.log(i)
+                var tempSplit = result[i].split(delimeters[0]);
+                result = result.slice(0, i).concat(tempSplit).concat(result.slice(i + 1));
+            //console.log(tempSplit);
+            }
+            delimeters.shift();
         }
-        delimeters.shift();
+        return result;
     }
-    return result;
-}
-var contents ="";
-var reader = new FileReader();
-reader.onload = function(event) {
-     contents = event.target.result;
-    
-};
 
-reader.onerror = function(event) {
-    console.error("File could not be read! Code " + event.target.error.code);
-};
+var splitList = [' ', '_', '/', '.', ';', ':', ',' ,'\n','\r'];
 
-reader.readAsText(file);
-
-var splitList = [" ", "_", "/",".",";",":",",","\\","[","]"];
-//splitString(stringToSplit, splitList);
-
-
-// var filepath = require('filepath')
-var mybookWordCollection =""
-var myfilePath = path.join(__dirname, 'AUSTIN-claude_chabrol.pdf')
-//var bookWordCollection = extract(myfilePath, { splitPages: false }, function (err, text) {
-var bookWordCollection = extract(myfilePath, function (err, pages) {
-   if (err) {
-    console.dir(err)
-    return
-  }
-  mybookWordCollection = console.dir(pages)
+var mybookWordCollection = '';
+var myfilePath = path.join(__dirname, 'linux4-1.pdf');
+var bookWordCollection = extract(myfilePath, { splitPages: false }, function (err, text) {
+//var bookWordCollection = extract(myfilePath, function(err, pages) {
+    if (err) {
+        console.dir(err)
+        return
+    }
+    //console.log(pages.toString());
+    var mybook = multiSplit(text.toString(), splitList);
+        // console.log(toString(bookWordCollection))
+    console.log(mybook);
 })
-
-// var mybookWordcollection = extract(myfilePath)
-console.log(mybookWordCollection)
-
-var mybook = multiSplit(fs.readfile(path.join(__dirname,'.log')), splitList)
-// console.log(toString(bookWordCollection))
-console.log(mybook)
-
