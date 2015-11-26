@@ -25,10 +25,19 @@ var multiSplit = function(str, delimeters) {
             }
             delimeters.shift();
         }
+        // //for (var i = 0; i < result.length-1; i++) {
+        //     for (var i = 0; i < result.length-1; i++) {
+        //     if (result[i]== "," && result[i+1] == ",")
+        //         //console.log(result.slice(0, i-1))
+        //         //console.log(result.slice(i+1, result.length))
+        //         result.slice(0, i-1).concat(result.slice(i+1, result.length))
+                
+        //     }
+
         return result;
     }
 
-var splitList = [' ', '_', '/', '.', ';', ':', ',' ,'\n','\r'];
+var splitList = [' ', '_', '/', '.', ';', ':', ',' ,'\n','\r','•',"^D"];
 
 var mybookWordCollection = '';
 var myfilePath = path.join(__dirname, 'linux4-1.pdf');
@@ -40,6 +49,7 @@ var bookWordCollection = extract(myfilePath, { splitPages: false }, function (er
     }
     //console.log(pages.toString());
     var mybook = multiSplit(text.toString(), splitList);
+    var mybook2 =mybook.replace(/^[,\s]+|[,\s]+$/g, '').replace(/,[,\s]*,/g, ',');
         // console.log(toString(bookWordCollection))
-    console.log(mybook);
+    console.log(mybook2);
 })
