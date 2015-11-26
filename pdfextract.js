@@ -43,5 +43,6 @@ var bookWordCollection = extract(myfilePath, {
 
     var mybook = multiSplit(text.toString(), splitList).replace(/^[,\s]+|[,\s]+$/g, '').replace(/,[,\s]*,/g, ',');
 
-    console.log(mybook);
+    var mybookarray = mybook.split(',');
+    console.log(mybookarray);
 })
